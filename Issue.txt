@@ -1,0 +1,2 @@
+Problem - The ADC has failed and there is no reverse communication on the ADC line. The main microcontroller heats up, but still allows menu navigation.
+The goal is to replace the controller with another because there is no communication with the manufacturer, the software could not be found.
