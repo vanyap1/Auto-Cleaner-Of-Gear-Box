@@ -5,6 +5,8 @@
  *  Author: User
  */ 
 #include "adc_hal.h"
+#include "twi_hal1.h"
+#include <util/delay.h>
 
 volatile static uint8_t adc_convert_done = 1;
 
@@ -60,5 +62,26 @@ uint16_t get_mVolt(uint8_t source){
 	adc_pin_select(source);
 	//uint16_t adc_tmp_data = adc_convert();
 	return ADC_VOLT(adc_convert());
+}
+
+void setExtAdcCh(uint8_t devAddr, uint8_t ch, uint8_t pgaMode){
+	
+}
+
+uint16_t getExtAdc(uint8_t devAddr, uint8_t ch, uint8_t pgaMode){
+	uint16_t configReg = 0x8000;
+	configReg |= (SPS_8 << DR) | (SINGLE_CONV << MODE) | (pgaMode << PGA) | (ch << MUX);
+	
+	//configReg =0b1000111110000001;
+	uint8_t configRegRaw[2] = {0, 0};
+	uint8_t returnRegs[2];
+	
+	configRegRaw[1] = configReg & 0xFF;
+	configRegRaw[0] = (configReg >> 8) & 0xFF;
+	
+	twi1_write(devAddr,1,configRegRaw,sizeof(configRegRaw));
+	_delay_ms(200);
+	twi1_read(devAddr,0, returnRegs, sizeof(returnRegs));
+	return (returnRegs[0] << 8) + returnRegs[1];
 }
 

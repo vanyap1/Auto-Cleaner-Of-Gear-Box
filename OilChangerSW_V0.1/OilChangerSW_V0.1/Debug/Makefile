@@ -39,6 +39,7 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../lib/adc_hal.c \
+../lib/eeprom.c \
 ../lib/gpio_driver.c \
 ../lib/rtc.c \
 ../lib/spi1_hall.c \
@@ -57,6 +58,7 @@ ASM_SRCS +=
 
 OBJS +=  \
 lib/adc_hal.o \
+lib/eeprom.o \
 lib/gpio_driver.o \
 lib/rtc.o \
 lib/spi1_hall.o \
@@ -68,6 +70,7 @@ main.o
 
 OBJS_AS_ARGS +=  \
 lib/adc_hal.o \
+lib/eeprom.o \
 lib/gpio_driver.o \
 lib/rtc.o \
 lib/spi1_hall.o \
@@ -79,6 +82,7 @@ main.o
 
 C_DEPS +=  \
 lib/adc_hal.d \
+lib/eeprom.d \
 lib/gpio_driver.d \
 lib/rtc.d \
 lib/spi1_hall.d \
@@ -90,6 +94,7 @@ main.d
 
 C_DEPS_AS_ARGS +=  \
 lib/adc_hal.d \
+lib/eeprom.d \
 lib/gpio_driver.d \
 lib/rtc.d \
 lib/spi1_hall.d \
@@ -114,6 +119,13 @@ LINKER_SCRIPT_DEP+=
 
 # AVR32/GNU C Compiler
 lib/adc_hal.o: ../lib/adc_hal.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include" -I"../lib" -I".."  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+lib/eeprom.o: ../lib/eeprom.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include" -I"../lib" -I".."  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

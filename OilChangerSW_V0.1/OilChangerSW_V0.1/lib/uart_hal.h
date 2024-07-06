@@ -40,6 +40,7 @@ void uart_send_byte(uint8_t c);
 void uart_send_array(uint8_t *c,uint16_t len);
 void uart_send_array_simple(uint8_t *c,uint16_t len);
 void screenInit(void);
+void screenKeepAlive(void);
 
 void screenPrintString(uint8_t xPox, uint8_t yPox, uint8_t *c, uint8_t selectType);
 void screenVerticalBar(uint8_t xPox, uint8_t yPox, uint8_t barVal, uint8_t maxHeight);

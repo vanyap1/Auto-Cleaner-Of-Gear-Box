@@ -4,6 +4,8 @@
 
 lib\adc_hal.c
 
+lib\eeprom.c
+
 lib\gpio_driver.c
 
 lib\rtc.c

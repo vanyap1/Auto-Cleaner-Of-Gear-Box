@@ -106,6 +106,7 @@ void uart_init(uint32_t baud,uint8_t high_speed){
 }
 
 
+
 void uart_send_byte(uint8_t c){
 	while(uart_tx_busy == 0);
 	uart_tx_busy = 0;
@@ -162,6 +163,10 @@ void screenInit(void){
 
 }
 
+void screenKeepAlive(void){
+	uart_send_array_simple((uint8_t *)init2, sizeof(init2));
+	_delay_ms(10);
+}
 
 void screenPrintString(uint8_t xPox, uint8_t yPox, uint8_t *c, uint8_t selectType){
 	//if(selectType == 0 || selectType == 1){

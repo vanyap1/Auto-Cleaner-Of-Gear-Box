@@ -24,7 +24,7 @@ main.d main.o: .././main.c .././config.h \
  ../lib/twi_hal1.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\compat\twi.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\twi.h \
- ../lib/spi1_hall.h
+ ../lib/spi1_hall.h ../lib/adc_hal.h ../lib/eeprom.h ../config.h
 
 .././config.h:
 
@@ -83,3 +83,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\twi.h:
 
 ../lib/spi1_hall.h:
+
+../lib/adc_hal.h:
+
+../lib/eeprom.h:
+
+../config.h:

@@ -62,10 +62,15 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 Allocating common symbols
 Common symbol       size              file
 
+tankRight           0x8               main.o
 byteIndex           0x1               lib/twi1_slave.o
 twi_buff            0x2               lib/twi1_slave.o
 tmpkeyChar          0x1               lib/uart_hal.o
+tankLeft            0x8               main.o
+screenPart          0x1               main.o
+adcValRight         0x2               main.o
 __iob               0x6               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
+adcValLeft          0x2               main.o
 
 Discarded input sections
 
@@ -87,6 +92,11 @@ Discarded input sections
  .text.get_adc  0x00000000        0xa lib/adc_hal.o
  .text.get_mVolt
                 0x00000000       0x26 lib/adc_hal.o
+ .text.setExtAdcCh
+                0x00000000        0x2 lib/adc_hal.o
+ .text          0x00000000        0x0 lib/eeprom.o
+ .data          0x00000000        0x0 lib/eeprom.o
+ .bss           0x00000000        0x0 lib/eeprom.o
  .text          0x00000000        0x0 lib/gpio_driver.o
  .data          0x00000000        0x0 lib/gpio_driver.o
  .bss           0x00000000        0x0 lib/gpio_driver.o
@@ -193,30 +203,10 @@ Discarded input sections
  .text          0x00000000        0x0 lib/twi_hal1.o
  .data          0x00000000        0x0 lib/twi_hal1.o
  .bss           0x00000000        0x0 lib/twi_hal1.o
- .text.twi1_start
-                0x00000000       0x2c lib/twi_hal1.o
- .text.twi1_stop
-                0x00000000        0x8 lib/twi_hal1.o
- .text.twi1_restart
-                0x00000000       0x2c lib/twi_hal1.o
- .text.twi1_addr_write_ack
-                0x00000000       0x2c lib/twi_hal1.o
- .text.twi1_data_write_ack
-                0x00000000       0x2c lib/twi_hal1.o
- .text.twi1_addr_read_ack
-                0x00000000       0x2c lib/twi_hal1.o
- .text.twi1_data_read_ack
-                0x00000000       0x5c lib/twi_hal1.o
  .text.twi1DataReceived
                 0x00000000        0xa lib/twi_hal1.o
- .text.twi1_read
-                0x00000000       0xf6 lib/twi_hal1.o
- .text.twi1_write
-                0x00000000       0x9a lib/twi_hal1.o
  .text.twi1_transfer
                 0x00000000       0x80 lib/twi_hal1.o
- .text.twi1_init
-                0x00000000       0x32 lib/twi_hal1.o
  .text.twi1_slave_init
                 0x00000000       0x5e lib/twi_hal1.o
  .text          0x00000000        0x0 lib/uart_hal.o
@@ -302,8 +292,6 @@ Discarded input sections
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
  .text.libgcc.mul
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
- .text.libgcc.div
-                0x00000000       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
  .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
  .text.libgcc.prologue
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
@@ -410,8 +398,6 @@ Discarded input sections
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
  .text.libgcc.mul
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
- .text.libgcc.div
-                0x00000000       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
  .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
  .text.libgcc.prologue
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
@@ -502,6 +488,7 @@ Linker script and memory map
 Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
 LOAD lib/adc_hal.o
+LOAD lib/eeprom.o
 LOAD lib/gpio_driver.o
 LOAD lib/rtc.o
 LOAD lib/spi1_hall.o
@@ -619,7 +606,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x101e
+.text           0x00000000     0x1866
  *(.vectors)
  .vectors       0x00000000       0xb4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
                 0x00000000                __vector_default
@@ -722,93 +709,144 @@ END GROUP
  .text.__vector_21
                 0x000000f2       0x1e lib/adc_hal.o
                 0x000000f2                __vector_21
+ .text.getExtAdc
+                0x00000110       0x8a lib/adc_hal.o
+                0x00000110                getExtAdc
+ .text.EEPROM_read
+                0x0000019a       0x2a lib/eeprom.o
+                0x0000019a                EEPROM_read
+ .text.EEPROM_write
+                0x000001c4       0x2c lib/eeprom.o
+                0x000001c4                EEPROM_write
+ .text.EEPROM_update
+                0x000001f0       0x70 lib/eeprom.o
+                0x000001f0                EEPROM_update
+ .text.EEPROM_update_batch
+                0x00000260       0x4e lib/eeprom.o
+                0x00000260                EEPROM_update_batch
+ .text.EEPROM_read_batch
+                0x000002ae       0x4c lib/eeprom.o
+                0x000002ae                EEPROM_read_batch
  .text.gpio_set_pin_level
-                0x00000110       0x52 lib/gpio_driver.o
-                0x00000110                gpio_set_pin_level
+                0x000002fa       0x52 lib/gpio_driver.o
+                0x000002fa                gpio_set_pin_level
  .text.gpio_set_pin_direction
-                0x00000162       0x84 lib/gpio_driver.o
-                0x00000162                gpio_set_pin_direction
+                0x0000034c       0x84 lib/gpio_driver.o
+                0x0000034c                gpio_set_pin_direction
  .text.gpio_toggle_pin_level
-                0x000001e6       0x22 lib/gpio_driver.o
-                0x000001e6                gpio_toggle_pin_level
+                0x000003d0       0x22 lib/gpio_driver.o
+                0x000003d0                gpio_toggle_pin_level
  .text.__vector_39
-                0x00000208       0x2e lib/spi1_hall.o
-                0x00000208                __vector_39
+                0x000003f2       0x2e lib/spi1_hall.o
+                0x000003f2                __vector_39
  .text.__vector_24
-                0x00000236       0xe8 lib/twi_hal0.o
-                0x00000236                __vector_24
+                0x00000420       0xe8 lib/twi_hal0.o
+                0x00000420                __vector_24
+ .text.twi1_start
+                0x00000508       0x2c lib/twi_hal1.o
+ .text.twi1_stop
+                0x00000534        0x8 lib/twi_hal1.o
+ .text.twi1_restart
+                0x0000053c       0x2c lib/twi_hal1.o
+ .text.twi1_addr_write_ack
+                0x00000568       0x2c lib/twi_hal1.o
+ .text.twi1_data_write_ack
+                0x00000594       0x2c lib/twi_hal1.o
+ .text.twi1_addr_read_ack
+                0x000005c0       0x2c lib/twi_hal1.o
+ .text.twi1_data_read_ack
+                0x000005ec       0x5c lib/twi_hal1.o
  .text.__vector_40
-                0x0000031e       0xe8 lib/twi_hal1.o
-                0x0000031e                __vector_40
- .text.getKey   0x00000406       0x10 lib/uart_hal.o
-                0x00000406                getKey
+                0x00000648       0xe8 lib/twi_hal1.o
+                0x00000648                __vector_40
+ .text.twi1_read
+                0x00000730       0xf6 lib/twi_hal1.o
+                0x00000730                twi1_read
+ .text.twi1_write
+                0x00000826       0x9a lib/twi_hal1.o
+                0x00000826                twi1_write
+ .text.twi1_init
+                0x000008c0       0x32 lib/twi_hal1.o
+                0x000008c0                twi1_init
+ .text.getKey   0x000008f2       0x10 lib/uart_hal.o
+                0x000008f2                getKey
  .text.__vector_18
-                0x00000416       0x3a lib/uart_hal.o
-                0x00000416                __vector_18
+                0x00000902       0x3a lib/uart_hal.o
+                0x00000902                __vector_18
  .text.__vector_20
-                0x00000450       0x1e lib/uart_hal.o
-                0x00000450                __vector_20
+                0x0000093c       0x1e lib/uart_hal.o
+                0x0000093c                __vector_20
  .text.uart_init
-                0x0000046e       0x70 lib/uart_hal.o
-                0x0000046e                uart_init
+                0x0000095a       0x70 lib/uart_hal.o
+                0x0000095a                uart_init
  .text.uart_send_byte
-                0x000004de       0x12 lib/uart_hal.o
-                0x000004de                uart_send_byte
+                0x000009ca       0x12 lib/uart_hal.o
+                0x000009ca                uart_send_byte
  .text.uart_send_array
-                0x000004f0       0x44 lib/uart_hal.o
-                0x000004f0                uart_send_array
+                0x000009dc       0x44 lib/uart_hal.o
+                0x000009dc                uart_send_array
  .text.uart_send_array_simple
-                0x00000534       0x4a lib/uart_hal.o
-                0x00000534                uart_send_array_simple
+                0x00000a20       0x4a lib/uart_hal.o
+                0x00000a20                uart_send_array_simple
  .text.screenInit
-                0x0000057e      0x11e lib/uart_hal.o
-                0x0000057e                screenInit
+                0x00000a6a      0x11e lib/uart_hal.o
+                0x00000a6a                screenInit
+ .text.screenKeepAlive
+                0x00000b88       0x1a lib/uart_hal.o
+                0x00000b88                screenKeepAlive
  .text.screenPrintString
-                0x0000069c       0xc8 lib/uart_hal.o
-                0x0000069c                screenPrintString
+                0x00000ba2       0xc8 lib/uart_hal.o
+                0x00000ba2                screenPrintString
  .text.screenVerticalBar
-                0x00000764       0xa4 lib/uart_hal.o
-                0x00000764                screenVerticalBar
- .text.main     0x00000808      0x1c6 main.o
-                0x00000808                main
+                0x00000c6a       0xa4 lib/uart_hal.o
+                0x00000c6a                screenVerticalBar
+ .text.main     0x00000d0e      0x4b8 main.o
+                0x00000d0e                main
  .text.libgcc.div
-                0x000009ce       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodsi4.o)
-                0x000009ce                __udivmodsi4
+                0x000011c6       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
+                0x000011c6                _div
+                0x000011c6                __divmodhi4
+ .text.libgcc.div
+                0x000011ee       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodsi4.o)
+                0x000011ee                __udivmodsi4
  .text.libgcc.mul
-                0x00000a12       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_muluhisi3.o)
-                0x00000a12                __muluhisi3
+                0x00001232       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_muluhisi3.o)
+                0x00001232                __muluhisi3
+ .text.libgcc.div
+                0x00001248       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
+                0x00001248                __udivmodhi4
  .text.libgcc.mul
-                0x00000a28       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
-                0x00000a28                __umulhisi3
+                0x00001270       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                0x00001270                __umulhisi3
  .text.avr-libc
-                0x00000a46       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
-                0x00000a46                sprintf
+                0x0000128e       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                0x0000128e                sprintf
  .text.avr-libc
-                0x00000a8a      0x3c2 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
-                0x00000a8a                vfprintf
+                0x000012d2      0x3c2 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                0x000012d2                vfprintf
  .text.avr-libc
-                0x00000e4c       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
-                0x00000e4c                strnlen_P
+                0x00001694       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                0x00001694                strnlen_P
  .text.avr-libc
-                0x00000e62       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
-                0x00000e62                strnlen
+                0x000016aa       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                0x000016aa                strnlen
  .text.avr-libc
-                0x00000e78       0x78 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
-                0x00000e78                fputc
+                0x000016c0       0x78 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x000016c0                fputc
  .text.avr-libc
-                0x00000ef0       0xbc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
-                0x00000ef0                __ultoa_invert
+                0x00001738       0xbc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                0x00001738                __ultoa_invert
  .text.libgcc.prologue
-                0x00000fac       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
-                0x00000fac                __prologue_saves__
+                0x000017f4       0x38 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
+                0x000017f4                __prologue_saves__
  .text.libgcc.prologue
-                0x00000fe4       0x36 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
-                0x00000fe4                __epilogue_restores__
-                0x0000101a                . = ALIGN (0x2)
+                0x0000182c       0x36 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
+                0x0000182c                __epilogue_restores__
+                0x00001862                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000101a        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x0000101a                _exit
-                0x0000101a                exit
+ .fini9         0x00001862        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00001862                _exit
+                0x00001862                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -827,11 +865,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000101a        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00001862        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000101e                _etext = .
+                0x00001866                _etext = .
 
-.data           0x00800100       0x82 load address 0x0000101e
+.data           0x00800100       0xc0 load address 0x00001866
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -866,50 +904,77 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800137       0x4a main.o
+                0x00800137       0x88 main.o
  *(.gnu.linkonce.r*)
-                0x00800182                . = ALIGN (0x2)
- *fill*         0x00800181        0x1 
-                0x00800182                _edata = .
-                0x00800182                PROVIDE (__data_end, .)
+                0x008001c0                . = ALIGN (0x2)
+ *fill*         0x008001bf        0x1 
+                0x008001c0                _edata = .
+                0x008001c0                PROVIDE (__data_end, .)
 
-.bss            0x00800182       0x21
-                0x00800182                PROVIDE (__bss_start, .)
+.bss            0x008001c0       0x52
+                0x008001c0                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.spi_txrx_done
-                0x00800182        0x1 lib/spi1_hall.o
-                0x00800182                spi_txrx_done
- .bss.twiReady  0x00800183        0x1 lib/twi_hal0.o
- .bss.twi_mode  0x00800184        0x1 lib/twi_hal0.o
- .bss.twiReady  0x00800185        0x1 lib/twi_hal1.o
- .bss.twi_mode  0x00800186        0x1 lib/twi_hal1.o
+                0x008001c0        0x1 lib/spi1_hall.o
+                0x008001c0                spi_txrx_done
+ .bss.twiReady  0x008001c1        0x1 lib/twi_hal0.o
+ .bss.twi_mode  0x008001c2        0x1 lib/twi_hal0.o
+ .bss.twiReady  0x008001c3        0x1 lib/twi_hal1.o
+ .bss.twi_mode  0x008001c4        0x1 lib/twi_hal1.o
  .bss.screenReady
-                0x00800187        0x1 lib/uart_hal.o
-                0x00800187                screenReady
+                0x008001c5        0x1 lib/uart_hal.o
+                0x008001c5                screenReady
+ .bss.callValues
+                0x008001c6        0x4 main.o
+                0x008001c6                callValues
+ .bss.scrLineBuff
+                0x008001ca       0x10 main.o
+                0x008001ca                scrLineBuff
  .bss.measBuffer
-                0x00800188       0x10 main.o
-                0x00800188                measBuffer
+                0x008001da       0x10 main.o
+                0x008001da                measBuffer
  .bss.menuPointer
-                0x00800198        0x1 main.o
-                0x00800198                menuPointer
+                0x008001ea        0x1 main.o
+                0x008001ea                menuPointer
+ .bss.pump      0x008001eb        0x1 main.o
+                0x008001eb                pump
+ .bss.valve2    0x008001ec        0x1 main.o
+                0x008001ec                valve2
+ .bss.valve1    0x008001ed        0x1 main.o
+                0x008001ed                valve1
+ .bss.lastAdcValueRight
+                0x008001ee        0x2 main.o
+                0x008001ee                lastAdcValueRight
+ .bss.lastAdcValueLeft
+                0x008001f0        0x2 main.o
+                0x008001f0                lastAdcValueLeft
+ .bss.currentScr
+                0x008001f2        0x1 main.o
+                0x008001f2                currentScr
  *(COMMON)
- COMMON         0x00800199        0x3 lib/twi1_slave.o
-                0x00800199                byteIndex
-                0x0080019a                twi_buff
- COMMON         0x0080019c        0x1 lib/uart_hal.o
-                0x0080019c                tmpkeyChar
- COMMON         0x0080019d        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
-                0x0080019d                __iob
-                0x008001a3                PROVIDE (__bss_end, .)
-                0x0000101e                __data_load_start = LOADADDR (.data)
-                0x000010a0                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008001f3        0x3 lib/twi1_slave.o
+                0x008001f3                byteIndex
+                0x008001f4                twi_buff
+ COMMON         0x008001f6        0x1 lib/uart_hal.o
+                0x008001f6                tmpkeyChar
+ COMMON         0x008001f7       0x15 main.o
+                0x008001f7                tankRight
+                0x008001ff                tankLeft
+                0x00800207                screenPart
+                0x00800208                adcValRight
+                0x0080020a                adcValLeft
+ COMMON         0x0080020c        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
+                0x0080020c                __iob
+                0x00800212                PROVIDE (__bss_end, .)
+                0x00001866                __data_load_start = LOADADDR (.data)
+                0x00001926                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008001a3        0x0
+.noinit         0x00800212        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x008001a3                _end = .
+                0x00800212                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -953,6 +1018,7 @@ END GROUP
  *(.comment)
  .comment       0x00000000       0x30 lib/adc_hal.o
                                  0x31 (size before relaxing)
+ .comment       0x00000030       0x31 lib/eeprom.o
  .comment       0x00000030       0x31 lib/gpio_driver.o
  .comment       0x00000030       0x31 lib/spi1_hall.o
  .comment       0x00000030       0x31 lib/twi1_slave.o
@@ -986,103 +1052,112 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x2d8
+.debug_aranges  0x00000000      0x330
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x58 lib/adc_hal.o
+                0x00000000       0x68 lib/adc_hal.o
  .debug_aranges
-                0x00000058       0x48 lib/gpio_driver.o
+                0x00000068       0x40 lib/eeprom.o
  .debug_aranges
-                0x000000a0       0x60 lib/spi1_hall.o
+                0x000000a8       0x48 lib/gpio_driver.o
  .debug_aranges
-                0x00000100       0x18 lib/twi1_slave.o
+                0x000000f0       0x60 lib/spi1_hall.o
  .debug_aranges
-                0x00000118       0x88 lib/twi_hal0.o
+                0x00000150       0x18 lib/twi1_slave.o
  .debug_aranges
-                0x000001a0       0x88 lib/twi_hal1.o
+                0x00000168       0x88 lib/twi_hal0.o
  .debug_aranges
-                0x00000228       0x90 lib/uart_hal.o
+                0x000001f0       0x88 lib/twi_hal1.o
  .debug_aranges
-                0x000002b8       0x20 main.o
+                0x00000278       0x98 lib/uart_hal.o
+ .debug_aranges
+                0x00000310       0x20 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2bea
+.debug_info     0x00000000     0x3310
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x8ea C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
- .debug_info    0x000008ea      0x209 lib/adc_hal.o
- .debug_info    0x00000af3      0x289 lib/gpio_driver.o
- .debug_info    0x00000d7c      0x613 lib/spi1_hall.o
- .debug_info    0x0000138f       0xa1 lib/twi1_slave.o
- .debug_info    0x00001430      0x597 lib/twi_hal0.o
- .debug_info    0x000019c7      0x597 lib/twi_hal1.o
- .debug_info    0x00001f5e      0x945 lib/uart_hal.o
- .debug_info    0x000028a3      0x347 main.o
+ .debug_info    0x000008ea      0x411 lib/adc_hal.o
+ .debug_info    0x00000cfb      0x2ff lib/eeprom.o
+ .debug_info    0x00000ffa      0x289 lib/gpio_driver.o
+ .debug_info    0x00001283      0x613 lib/spi1_hall.o
+ .debug_info    0x00001896       0xa1 lib/twi1_slave.o
+ .debug_info    0x00001937      0x597 lib/twi_hal0.o
+ .debug_info    0x00001ece      0x597 lib/twi_hal1.o
+ .debug_info    0x00002465      0x9bb lib/uart_hal.o
+ .debug_info    0x00002e20      0x4f0 main.o
 
-.debug_abbrev   0x00000000     0x1493
+.debug_abbrev   0x00000000     0x16bc
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x86e C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
- .debug_abbrev  0x0000086e      0x122 lib/adc_hal.o
- .debug_abbrev  0x00000990       0xfc lib/gpio_driver.o
- .debug_abbrev  0x00000a8c      0x206 lib/spi1_hall.o
- .debug_abbrev  0x00000c92       0x63 lib/twi1_slave.o
- .debug_abbrev  0x00000cf5      0x1dc lib/twi_hal0.o
- .debug_abbrev  0x00000ed1      0x1dc lib/twi_hal1.o
- .debug_abbrev  0x000010ad      0x229 lib/uart_hal.o
- .debug_abbrev  0x000012d6      0x1bd main.o
+ .debug_abbrev  0x0000086e      0x20b lib/adc_hal.o
+ .debug_abbrev  0x00000a79      0x131 lib/eeprom.o
+ .debug_abbrev  0x00000baa       0xfc lib/gpio_driver.o
+ .debug_abbrev  0x00000ca6      0x206 lib/spi1_hall.o
+ .debug_abbrev  0x00000eac       0x63 lib/twi1_slave.o
+ .debug_abbrev  0x00000f0f      0x1dc lib/twi_hal0.o
+ .debug_abbrev  0x000010eb      0x1dc lib/twi_hal1.o
+ .debug_abbrev  0x000012c7      0x229 lib/uart_hal.o
+ .debug_abbrev  0x000014f0      0x1cc main.o
 
-.debug_line     0x00000000     0x1b10
+.debug_line     0x00000000     0x2011
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x1a6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
- .debug_line    0x000001a6      0x19e lib/adc_hal.o
- .debug_line    0x00000344      0x18b lib/gpio_driver.o
- .debug_line    0x000004cf      0x2e1 lib/spi1_hall.o
- .debug_line    0x000007b0       0x93 lib/twi1_slave.o
- .debug_line    0x00000843      0x5e6 lib/twi_hal0.o
- .debug_line    0x00000e29      0x5ec lib/twi_hal1.o
- .debug_line    0x00001415      0x4df lib/uart_hal.o
- .debug_line    0x000018f4      0x21c main.o
+ .debug_line    0x000001a6      0x27d lib/adc_hal.o
+ .debug_line    0x00000423      0x229 lib/eeprom.o
+ .debug_line    0x0000064c      0x18b lib/gpio_driver.o
+ .debug_line    0x000007d7      0x2e1 lib/spi1_hall.o
+ .debug_line    0x00000ab8       0x93 lib/twi1_slave.o
+ .debug_line    0x00000b4b      0x5e6 lib/twi_hal0.o
+ .debug_line    0x00001131      0x5ec lib/twi_hal1.o
+ .debug_line    0x0000171d      0x4fe lib/uart_hal.o
+ .debug_line    0x00001c1b      0x3f6 main.o
 
-.debug_frame    0x00000000      0x740
+.debug_frame    0x00000000      0x8cc
  *(.debug_frame)
- .debug_frame   0x00000000       0xa4 lib/adc_hal.o
- .debug_frame   0x000000a4       0x74 lib/gpio_driver.o
- .debug_frame   0x00000118       0xec lib/spi1_hall.o
- .debug_frame   0x00000204      0x190 lib/twi_hal0.o
- .debug_frame   0x00000394      0x190 lib/twi_hal1.o
- .debug_frame   0x00000524      0x1dc lib/uart_hal.o
- .debug_frame   0x00000700       0x40 main.o
+ .debug_frame   0x00000000       0xdc lib/adc_hal.o
+ .debug_frame   0x000000dc       0xd4 lib/eeprom.o
+ .debug_frame   0x000001b0       0x74 lib/gpio_driver.o
+ .debug_frame   0x00000224       0xec lib/spi1_hall.o
+ .debug_frame   0x00000310      0x190 lib/twi_hal0.o
+ .debug_frame   0x000004a0      0x190 lib/twi_hal1.o
+ .debug_frame   0x00000630      0x1ec lib/uart_hal.o
+ .debug_frame   0x0000081c       0xb0 main.o
 
-.debug_str      0x00000000      0xba9
+.debug_str      0x00000000      0xe38
  *(.debug_str)
  .debug_str     0x00000000      0x318 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328pb/avr5/crtatmega328pb.o
- .debug_str     0x00000318      0x1e7 lib/adc_hal.o
-                                0x21b (size before relaxing)
- .debug_str     0x000004ff      0x11b lib/gpio_driver.o
+ .debug_str     0x00000318      0x2d3 lib/adc_hal.o
+                                0x30c (size before relaxing)
+ .debug_str     0x000005eb       0xae lib/eeprom.o
+                                0x234 (size before relaxing)
+ .debug_str     0x00000699      0x11b lib/gpio_driver.o
                                 0x2b7 (size before relaxing)
- .debug_str     0x0000061a       0xc3 lib/spi1_hall.o
+ .debug_str     0x000007b4       0xc3 lib/spi1_hall.o
                                 0x2fa (size before relaxing)
- .debug_str     0x000006dd       0x2e lib/twi1_slave.o
+ .debug_str     0x00000877       0x2e lib/twi1_slave.o
                                 0x1a6 (size before relaxing)
- .debug_str     0x0000070b      0x13e lib/twi_hal0.o
+ .debug_str     0x000008a5      0x135 lib/twi_hal0.o
                                 0x2e9 (size before relaxing)
- .debug_str     0x00000849       0xdc lib/twi_hal1.o
+ .debug_str     0x000009da       0xc7 lib/twi_hal1.o
                                 0x2e9 (size before relaxing)
- .debug_str     0x00000925      0x206 lib/uart_hal.o
-                                0x3a6 (size before relaxing)
- .debug_str     0x00000b2b       0x7e main.o
-                                0x29a (size before relaxing)
+ .debug_str     0x00000aa1      0x1cb lib/uart_hal.o
+                                0x3b6 (size before relaxing)
+ .debug_str     0x00000c6c      0x1cc main.o
+                                0x3f6 (size before relaxing)
 
-.debug_loc      0x00000000     0x2083
+.debug_loc      0x00000000     0x28be
  *(.debug_loc)
- .debug_loc     0x00000000       0xdd lib/adc_hal.o
- .debug_loc     0x000000dd      0x190 lib/gpio_driver.o
- .debug_loc     0x0000026d      0x281 lib/spi1_hall.o
- .debug_loc     0x000004ee      0x934 lib/twi_hal0.o
- .debug_loc     0x00000e22      0x934 lib/twi_hal1.o
- .debug_loc     0x00001756      0x8a3 lib/uart_hal.o
- .debug_loc     0x00001ff9       0x8a main.o
+ .debug_loc     0x00000000      0x219 lib/adc_hal.o
+ .debug_loc     0x00000219      0x4d6 lib/eeprom.o
+ .debug_loc     0x000006ef      0x190 lib/gpio_driver.o
+ .debug_loc     0x0000087f      0x281 lib/spi1_hall.o
+ .debug_loc     0x00000b00      0x934 lib/twi_hal0.o
+ .debug_loc     0x00001434      0x934 lib/twi_hal1.o
+ .debug_loc     0x00001d68      0x8eb lib/uart_hal.o
+ .debug_loc     0x00002653      0x26b main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1102,15 +1177,16 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x250
+.debug_ranges   0x00000000      0x298
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x48 lib/adc_hal.o
- .debug_ranges  0x00000048       0x38 lib/gpio_driver.o
- .debug_ranges  0x00000080       0x50 lib/spi1_hall.o
- .debug_ranges  0x000000d0       0x78 lib/twi_hal0.o
- .debug_ranges  0x00000148       0x78 lib/twi_hal1.o
- .debug_ranges  0x000001c0       0x80 lib/uart_hal.o
- .debug_ranges  0x00000240       0x10 main.o
+ .debug_ranges  0x00000000       0x58 lib/adc_hal.o
+ .debug_ranges  0x00000058       0x30 lib/eeprom.o
+ .debug_ranges  0x00000088       0x38 lib/gpio_driver.o
+ .debug_ranges  0x000000c0       0x50 lib/spi1_hall.o
+ .debug_ranges  0x00000110       0x78 lib/twi_hal0.o
+ .debug_ranges  0x00000188       0x78 lib/twi_hal1.o
+ .debug_ranges  0x00000200       0x88 lib/uart_hal.o
+ .debug_ranges  0x00000288       0x10 main.o
 
 .debug_macro
  *(.debug_macro)
