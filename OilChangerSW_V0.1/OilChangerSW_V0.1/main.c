@@ -32,6 +32,11 @@ static FILE mystdout = FDEV_SETUP_STREAM((void *)uart_send_byte, NULL, _FDEV_SET
 #define  setupScreen	1
 uint8_t currentScr = 0;
 
+#define  OK_BTN			0x03
+#define  PLUS_BTN		0x01
+#define  MINUS_BTN		0x02
+#define  ESC_BTN		0x00
+
 
 int16_t lastAdcValueLeft = 0;
 int16_t lastAdcValueRight = 0;
@@ -44,12 +49,16 @@ bool valve1 = false;
 bool valve2 = false;
 bool pump = false;
 
-
+bool mainProc = false;
+bool cleanProc = false;
 
 gpio dev1[2] = {{(uint8_t *)&PORTC , PORTC0} , {(uint8_t *)&PORTE , PORTE3}};
 gpio dev2[3] = {{(uint8_t *)&PORTC , PORTC2} , {(uint8_t *)&PORTC , PORTC1}};
 gpio dev3[3] = {{(uint8_t *)&PORTC , PORTC5} , {(uint8_t *)&PORTC , PORTC4},{(uint8_t *)&PORTC , PORTC3}};
 
+gpio valveOut1 = {&PORTD , PORTD6};
+gpio valveOut2 = {&PORTD , PORTD5};
+gpio pumpOut = {&PORTD , PORTD3};
 uint8_t menuPointer = 0;
 
 char measBuffer[16] = "\0";
@@ -65,6 +74,10 @@ CallibrationValues callValues = {0, 0};
 //uint8_t initData[16];
 int main(void)
 {
+	gpio_set_pin_direction(&valveOut1, PORT_DIR_OUT); gpio_set_pin_level(&valveOut1, true);
+	gpio_set_pin_direction(&valveOut2, PORT_DIR_OUT); gpio_set_pin_level(&valveOut2, true);
+	
+	gpio_set_pin_direction(&pumpOut, PORT_DIR_OUT); gpio_set_pin_level(&pumpOut, true);
     //char char_array[128]="test_data\0";
     twi1_init(400000);
     
@@ -94,13 +107,13 @@ int main(void)
 		
 		if(serial_complete){
 			uint8_t key = getKey();
-			if(key == 0x00){
+			if(key == ESC_BTN){
 				//gpio_toggle_pin_level(&dev1[RED]);	
 			}
-			if(key == 0x01){
+			if(key == PLUS_BTN){
 				//gpio_toggle_pin_level(&dev1[GREEN]);
 				if(currentScr == mainScreen){
-					if(menuPointer < 3){
+					if(menuPointer < 4){
 						menuPointer++;
 					}
 				}
@@ -111,23 +124,43 @@ int main(void)
 				}
 				
 			}
-			if(key == 0x02){
+			if(key == MINUS_BTN){
 				//gpio_toggle_pin_level(&dev2[RED]);
 				if(menuPointer != 0){
 					menuPointer--;
 				}
 			}
-			if(key == 0x03){
+			if(key == OK_BTN){
 				//gpio_toggle_pin_level(&dev2[GREEN]);
 				
 				if(currentScr == mainScreen){
+					
+					
+					
+					if(menuPointer == 1){
+						mainProc =! mainProc;
+						cleanProc = false;
+					}
+					
+					if(menuPointer == 2){
+						cleanProc =! cleanProc;
+						mainProc = false;
+					}
+					
 					if(menuPointer == 3){
+						cleanProc = false;
+						mainProc = false;
+						
+					}
+					
+					if(menuPointer == 4){
 						currentScr = setupScreen;
 						menuPointer = 0;
 						valve1 = false;
 						valve2 = false;
 						pump = false;
 					}
+					
 					
 				}
 				
@@ -161,6 +194,7 @@ int main(void)
 						pump = false;
 					}
 				}
+				
 				
 				
 				
@@ -214,16 +248,20 @@ int main(void)
 		}
 		
 		
-		
+		//Menu
 		uint8_t preselect = 0;
 		if (currentScr == mainScreen){
+			sprintf(scrLineBuff, "Recycle %d", mainProc);
 			preselect = (menuPointer == 1) ? 2 : 0;
-			screenPrintString(75, 40, (uint8_t *)"Run cycle", preselect);
+			screenPrintString(75, 40, scrLineBuff, preselect);
+			
+			sprintf(scrLineBuff, "Clean   %d", cleanProc);
 			preselect = (menuPointer == 2) ? 2 : 0;
-			screenPrintString(75, 57, (uint8_t *)"Empty tank", preselect);
+			screenPrintString(75, 57, scrLineBuff , preselect);
 			preselect = (menuPointer == 3) ? 2 : 0;
-			screenPrintString(75, 74, "Setup    ", preselect);
-			screenPrintString(75, 91, "         ", 0);
+			screenPrintString(75, 74, "STOP     ", preselect);
+			preselect = (menuPointer == 4) ? 2 : 0;
+			screenPrintString(75, 91, "Setup    ", preselect);
 			screenPrintString(75, 108, "         ", 0);
 		}
 		if (currentScr == setupScreen){
@@ -244,10 +282,38 @@ int main(void)
 			screenPrintString(75, 108, "BACK    ", preselect);
 		}
 		
-		//Menu
+		
+		
+		//Work logic
+		if(currentScr == mainScreen){
+			if(mainProc || cleanProc){
+				if(mainProc){
+					pump = true;
+					valve1 = true;
+					valve2 = false;
+					}
+				
+				if (cleanProc){
+					pump = true;
+					valve2 = true;
+					valve1 = false;
+					}
+				
+				}else{
+				
+				pump = false;
+				valve1 = false;
+				valve2 = false;
+			}
+			
+		}
 		
 		
 		
+		
+		gpio_set_pin_level(&valveOut1, !valve1);
+		gpio_set_pin_level(&valveOut2, !valve2);
+		gpio_set_pin_level(&pumpOut, !pump);
 		screenKeepAlive();
     }
 }
